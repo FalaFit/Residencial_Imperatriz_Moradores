@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Morador - Residencial Imperatriz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in { 
+            animation: fadeIn 0.6s ease-out; 
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .animate-shake { 
+            animation: shake 0.5s; 
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 30px rgba(251, 191, 36, 0.4); }
+            50% { box-shadow: 0 0 50px rgba(251, 191, 36, 0.6); }
+        }
+        
+        .glow-animation { 
+            animation: glow 3s ease-in-out infinite; 
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .float-animation { 
+            animation: float 3s ease-in-out infinite; 
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .gradient-primary {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+        }
+
+        .glass-effect {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid rgba(251, 191, 36, 0.2);
+        }
+
+        /* Formatação de mensagens */
+        .message-content {
+            line-height: 1.8;
+        }
+
+        .message-content p {
+            margin-bottom: 1rem;
+        }
+
+        .message-content strong {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        /* Scrollbar customizada */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .hidden { display: none; }
+
+        /* Tabs */
+        .tab-active {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            color: white;
+        }
+
+        /* Input focus states */
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Container Principal -->
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        
+        <!-- Header -->
+        <div class="glass-effect rounded-3xl p-8 mb-6 animate-fade-in text-center">
+            <div class="float-animation inline-block mb-4">
+                <div class="w-20 h-20 gradient-primary rounded-2xl flex items-center justify-center text-5xl shadow-2xl glow-animation">
+                    🏢
+                </div>
+            </div>
+            <h1 class="text-4xl font-bold gradient-text mb-2">Residencial Imperatriz</h1>
+            <p class="text-slate-400 font-medium">Portal do Morador</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="glass-effect rounded-2xl p-2 mb-6 flex gap-2">
+            <button onclick="switchTab('consultar')" id="tab-consultar" class="tab-active flex-1 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300 hover:shadow-lg">
+                💬 Consultar
+            </button>
+            <button onclick="switchTab('agendar')" id="tab-agendar" class="bg-slate-700/50 text-slate-300 flex-1 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300 hover:bg-slate-600/50">
+                📅 Agendar
+            </button>
+            <button onclick="switchTab('meus')" id="tab-meus" class="bg-slate-700/50 text-slate-300 flex-1 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300 hover:bg-slate-600/50">
+                📋 Meus Agendamentos
+            </button>
+        </div>
+
+        <!-- TAB 1: CONSULTAR -->
+        <div id="content-consultar" class="tab-content">
+            <div class="glass-effect rounded-3xl p-8 animate-fade-in">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <span>💬</span>
+                    <span>Consultar Regulamento</span>
+                </h2>
+
+                <!-- Exemplos de Perguntas -->
+                <div id="exemplosArea" class="mb-6">
+                    <p class="text-slate-300 mb-4 text-sm font-medium">💡 Exemplos de perguntas:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="exemplo-btn bg-slate-700/50 hover:bg-amber-500/20 border border-slate-600 hover:border-amber-500 text-slate-300 hover:text-amber-300 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300">
+                            Qual o horário da piscina?
+                        </button>
+                        <button class="exemplo-btn bg-slate-700/50 hover:bg-amber-500/20 border border-slate-600 hover:border-amber-500 text-slate-300 hover:text-amber-300 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300">
+                            Posso ter cachorro?
+                        </button>
+                        <button class="exemplo-btn bg-slate-700/50 hover:bg-amber-500/20 border border-slate-600 hover:border-amber-500 text-slate-300 hover:text-amber-300 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300">
+                            Horário para obras?
+                        </button>
+                        <button class="exemplo-btn bg-slate-700/50 hover:bg-amber-500/20 border border-slate-600 hover:border-amber-500 text-slate-300 hover:text-amber-300 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300">
+                            Como reservar o salão?
+                        </button>
+                        <button class="exemplo-btn bg-slate-700/50 hover:bg-amber-500/20 border border-slate-600 hover:border-amber-500 text-slate-300 hover:text-amber-300 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300">
+                            Quem é o síndico?
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Área de Chat -->
+                <div id="chatArea" class="bg-slate-800/50 rounded-2xl p-6 mb-6 h-96 overflow-y-auto custom-scrollbar">
+                    <div class="message-bot mb-6">
+                        <div class="flex gap-3 mb-2">
+                            <div class="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+                                🏢
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-xs text-slate-400 font-medium mb-2">Assistente Virtual</div>
+                                <div class="bg-slate-700/70 rounded-2xl rounded-tl-none p-4 text-slate-200 message-content">
+                                    <p>Olá! Posso te ajudar com informações sobre:</p>
+                                    <p class="mt-2">
+                                        • Regulamento do condomínio<br>
+                                        • Horários de áreas comuns<br>
+                                        • Regras e normas<br>
+                                        • Contatos úteis<br>
+                                        • Serviços de moradores
+                                    </p>
+                                    <p class="mt-2"><strong>O que você gostaria de saber?</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading -->
+                <div id="loadingArea" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6 mb-6 text-center">
+                    <div class="inline-block">
+                        <svg class="animate-spin h-8 w-8 text-amber-500 mx-auto mb-3" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-amber-300 font-medium">🔍 Consultando regulamento...</p>
+                    <p class="text-slate-400 text-sm mt-2">Aguarde alguns segundos</p>
+                </div>
+
+                <!-- Error -->
+                <div id="errorArea" class="hidden bg-red-500/10 border border-red-500/30 rounded-2xl p-6 mb-6 animate-shake">
+                    <div class="flex items-start gap-3">
+                        <div class="text-3xl">⚠️</div>
+                        <div class="flex-1">
+                            <h3 class="text-red-400 font-bold mb-2">Erro ao consultar</h3>
+                            <p class="text-slate-300 text-sm" id="errorMessage">Ocorreu um erro. Tente novamente.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input -->
+                <div class="flex gap-3">
+                    <input 
+                        type="text" 
+                        id="perguntaInput" 
+                        placeholder="Digite sua pergunta..." 
+                        class="flex-1 bg-slate-700/50 border-2 border-slate-600 text-white px-6 py-4 rounded-2xl font-medium placeholder-slate-400 transition-all duration-300"
+                        autocomplete="off"
+                    />
+                    <button 
+                        id="consultarButton" 
+                        class="gradient-primary text-white px-8 py-4 rounded-2xl font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex items-center gap-2"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <span>Consultar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: AGENDAR -->
+        <div id="content-agendar" class="tab-content hidden">
+            <div class="glass-effect rounded-3xl p-8 animate-fade-in">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <span>📅</span>
+                    <span>Agendar Área Comum</span>
+                </h2>
+
+                <form id="agendamentoForm" class="space-y-6">
+                    <!-- Área -->
+                    <div>
+                        <label class="block text-slate-300 font-semibold mb-2 text-sm">Área</label>
+                        <select id="area" required class="w-full bg-slate-700/50 border-2 border-slate-600 text-white px-6 py-4 rounded-xl font-medium transition-all duration-300">
+                            <option value="">Selecione...</option>
+                            <option value="Salão de Festas">Salão de Festas (taxa 27%)</option>
+                            <option value="Churrasqueira">Churrasqueira (taxa 14%)</option>
+                            <option value="Quadra">Quadra (gratuita)</option>
+                        </select>
+                        <p class="text-slate-400 text-xs mt-2">⏰ Horário: 10:00 às 23:00h</p>
+                    </div>
+
+                    <!-- Data -->
+                    <div>
+                        <label class="block text-slate-300 font-semibold mb-2 text-sm">Data</label>
+                        <input type="date" id="data" required class="w-full bg-slate-700/50 border-2 border-slate-600 text-white px-6 py-4 rounded-xl font-medium transition-all duration-300" />
+                        <p class="text-slate-400 text-xs mt-2">⚠️ Solicitação com antecedência mínima de 24h</p>
+                    </div>
+
+                    <!-- Apartamento -->
+                    <div>
+                        <label class="block text-slate-300 font-semibold mb-2 text-sm">Apartamento</label>
+                        <input type="text" id="apartamento" placeholder="Ex: 101" required class="w-full bg-slate-700/50 border-2 border-slate-600 text-white px-6 py-4 rounded-xl font-medium placeholder-slate-400 transition-all duration-300" />
+                    </div>
+
+                    <!-- Nome -->
+                    <div>
+                        <label class="block text-slate-300 font-semibold mb-2 text-sm">Nome Completo</label>
+                        <input type="text" id="nome" placeholder="Seu nome" required class="w-full bg-slate-700/50 border-2 border-slate-600 text-white px-6 py-4 rounded-xl font-medium placeholder-slate-400 transition-all duration-300" />
+                    </div>
+
+                    <!-- Telefone -->
+                    <div>
+                        <label class="block text-slate-300 font-semibold mb-2 text-sm">Telefone</label>
+                        <input type="tel" id="telefone" placeholder="(11) 99999-9999" required class="w-full bg-slate-700/50 border-2 border-slate-600 text-white px-6 py-4 rounded-xl font-medium placeholder-slate-400 transition-all duration-300" />
+                    </div>
+
+                    <!-- Observações -->
+                    <div>
+                        <label class="block text-slate-300 font-semibold mb-2 text-sm">Observações (opcional)</label>
+                        <textarea id="observacoes" placeholder="Aniversário, casamento, confraternização..." rows="3" class="w-full bg-slate-700/50 border-2 border-slate-600 text-white px-6 py-4 rounded-xl font-medium placeholder-slate-400 transition-all duration-300 resize-none"></textarea>
+                    </div>
+
+                    <!-- Botão Submit -->
+                    <button type="submit" class="w-full gradient-primary text-white py-4 rounded-xl font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 text-lg">
+                        📅 Solicitar Agendamento
+                    </button>
+                </form>
+
+                <!-- Loading Agendamento -->
+                <div id="agendamentoLoading" class="hidden mt-6 bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6 text-center">
+                    <div class="inline-block">
+                        <svg class="animate-spin h-8 w-8 text-amber-500 mx-auto mb-3" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-amber-300 font-medium">📝 Processando solicitação...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: MEUS AGENDAMENTOS -->
+        <div id="content-meus" class="tab-content hidden">
+            <div class="glass-effect rounded-3xl p-8 animate-fade-in">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <span>📋</span>
+                    <span>Meus Agendamentos</span>
+                </h2>
+
+                <!-- Busca -->
+                <div class="flex gap-3 mb-6">
+                    <input 
+                        type="text" 
+                        id="consultaApartamento" 
+                        placeholder="Digite seu apartamento (Ex: 101)" 
+                        class="flex-1 bg-slate-700/50 border-2 border-slate-600 text-white px-6 py-4 rounded-xl font-medium placeholder-slate-400 transition-all duration-300"
+                    />
+                    <button 
+                        id="consultarBtn" 
+                        class="gradient-primary text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+                    >
+                        Buscar
+                    </button>
+                </div>
+
+                <!-- Loading Consulta -->
+                <div id="meusLoading" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6 text-center mb-6">
+                    <div class="inline-block">
+                        <svg class="animate-spin h-8 w-8 text-amber-500 mx-auto mb-3" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-amber-300 font-medium">🔍 Buscando agendamentos...</p>
+                </div>
+
+                <!-- Lista de Agendamentos -->
+                <div id="meusAgendamentos"></div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="hidden text-center py-12">
+                    <div class="text-6xl mb-4 opacity-50">📅</div>
+                    <p class="text-slate-400 font-medium">Nenhum agendamento encontrado</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 glass-effect rounded-2xl px-8 py-4 shadow-2xl animate-fade-in z-50 max-w-md">
+        <div class="flex items-center gap-4">
+            <div class="text-3xl" id="toastIcon">✅</div>
+            <div class="text-white font-medium" id="toastMessage">Sucesso!</div>
+        </div>
+    </div>
+
+    <script>
+        const CONFIG = {
+            consultaWebhook: 'https://SEU_N8N.app.n8n.cloud/webhook/consulta-condominio',
+            agendarWebhook: 'https://SEU_N8N.app.n8n.cloud/webhook/agendar-area',
+            consultarWebhook: 'https://SEU_N8N.app.n8n.cloud/webhook/consultar-agendamentos'
+        };
+
+        // ==========================================
+        // TABS
+        // ==========================================
+        function switchTab(tab) {
+            // Remove active de todos
+            ['consultar', 'agendar', 'meus'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.remove('tab-active');
+                document.getElementById(`tab-${t}`).classList.add('bg-slate-700/50', 'text-slate-300');
+                document.getElementById(`content-${t}`).classList.add('hidden');
+            });
+
+            // Ativa o selecionado
+            document.getElementById(`tab-${tab}`).classList.add('tab-active');
+            document.getElementById(`tab-${tab}`).classList.remove('bg-slate-700/50', 'text-slate-300');
+            document.getElementById(`content-${tab}`).classList.remove('hidden');
+        }
+
+        // ==========================================
+        // CONSULTAR - CHAT
+        // ==========================================
+        const chatArea = document.getElementById('chatArea');
+        const perguntaInput = document.getElementById('perguntaInput');
+        const consultarButton = document.getElementById('consultarButton');
+        const loadingArea = document.getElementById('loadingArea');
+        const errorArea = document.getElementById('errorArea');
+        const errorMessage = document.getElementById('errorMessage');
+        const exemplosArea = document.getElementById('exemplosArea');
+
+        function addMessage(text, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-${type} mb-6`;
+
+            if (type === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="flex gap-3 mb-2 justify-end">
+                        <div class="flex-1 text-right">
+                            <div class="text-xs text-slate-400 font-medium mb-2">Você</div>
+                            <div class="inline-block bg-amber-500/20 border border-amber-500/40 rounded-2xl rounded-tr-none p-4 text-white message-content max-w-2xl">
+                                ${text}
+                            </div>
+                        </div>
+                        <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+                            👤
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="flex gap-3 mb-2">
+                        <div class="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+                            🏢
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-xs text-slate-400 font-medium mb-2">Assistente Virtual</div>
+                            <div class="bg-slate-700/70 rounded-2xl rounded-tl-none p-4 text-slate-200 message-content">
+                                ${text}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            chatArea.appendChild(messageDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            return messageDiv;
+        }
+
+        async function fazerPergunta() {
+            const pergunta = perguntaInput.value.trim();
+            
+            if (!pergunta) {
+                perguntaInput.focus();
+                return;
+            }
+
+            addMessage(pergunta, 'user');
+            perguntaInput.value = '';
+
+            consultarButton.disabled = true;
+            consultarButton.innerHTML = '<svg class="animate-spin h-6 w-6" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+            
+            errorArea.classList.add('hidden');
+            loadingArea.classList.remove('hidden');
+            exemplosArea.classList.add('hidden');
+
+            try {
+                const response = await fetch(CONFIG.consultaWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pergunta: pergunta, timestamp: new Date().toISOString() })
+                });
+
+                if (!response.ok) throw new Error(`Erro HTTP ${response.status}`);
+
+                const data = await response.json();
+                const resposta = data.resposta || data.message?.content || 'Não consegui processar sua pergunta.';
+                
+                // Converte markdown para HTML
+                let htmlContent = marked.parse(resposta);
+                
+                loadingArea.classList.add('hidden');
+                addMessage(htmlContent, 'bot');
+                
+            } catch (err) {
+                console.error('❌ ERRO:', err);
+                loadingArea.classList.add('hidden');
+                errorArea.classList.remove('hidden');
+                errorMessage.textContent = err.message || 'Erro ao conectar. Tente novamente.';
+                exemplosArea.classList.remove('hidden');
+            } finally {
+                consultarButton.disabled = false;
+                consultarButton.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>Consultar</span>';
+            }
+        }
+
+        consultarButton.addEventListener('click', fazerPergunta);
+        perguntaInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                fazerPergunta();
+            }
+        });
+
+        // Exemplos
+        document.querySelectorAll('.exemplo-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                perguntaInput.value = btn.textContent.trim();
+                fazerPergunta();
+            });
+        });
+
+        // ==========================================
+        // AGENDAR
+        // ==========================================
+        const agendamentoForm = document.getElementById('agendamentoForm');
+        const agendamentoLoading = document.getElementById('agendamentoLoading');
+
+        agendamentoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                area: document.getElementById('area').value,
+                data: document.getElementById('data').value,
+                apartamento: document.getElementById('apartamento').value,
+                nome: document.getElementById('nome').value,
+                telefone: document.getElementById('telefone').value,
+                observacoes: document.getElementById('observacoes').value,
+                timestamp: new Date().toISOString()
+            };
+
+            agendamentoForm.classList.add('hidden');
+            agendamentoLoading.classList.remove('hidden');
+
+            try {
+                const response = await fetch(CONFIG.agendarWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.sucesso) {
+                    showToast('✅', 'Solicitação enviada com sucesso!');
+                    agendamentoForm.reset();
+                } else {
+                    showToast('❌', data.mensagem || 'Erro ao processar. Tente novamente.');
+                }
+            } catch (error) {
+                showToast('❌', 'Erro de conexão. Tente novamente.');
+                console.error('Erro:', error);
+            } finally {
+                agendamentoLoading.classList.add('hidden');
+                agendamentoForm.classList.remove('hidden');
+            }
+        });
+
+        // ==========================================
+        // MEUS AGENDAMENTOS
+        // ==========================================
+        const consultarBtn = document.getElementById('consultarBtn');
+        const meusLoading = document.getElementById('meusLoading');
+        const meusAgendamentos = document.getElementById('meusAgendamentos');
+        const emptyState = document.getElementById('emptyState');
+
+        consultarBtn.addEventListener('click', async () => {
+            const apartamento = document.getElementById('consultaApartamento').value.trim();
+            
+            if (!apartamento) {
+                showToast('⚠️', 'Digite o número do apartamento');
+                return;
+            }
+
+            meusAgendamentos.innerHTML = '';
+            emptyState.classList.add('hidden');
+            meusLoading.classList.remove('hidden');
+
+            try {
+                const response = await fetch(CONFIG.consultarWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ apartamento: apartamento })
+                });
+
+                const data = await response.json();
+
+                if (data.sucesso && data.agendamentos && data.agendamentos.length > 0) {
+                    data.agendamentos.forEach(ag => {
+                        const statusColor = ag.Status === 'Confirmado' ? 'green' :
+                                          ag.Status === 'Pendente' ? 'amber' : 'red';
+                        
+                        const item = document.createElement('div');
+                        item.className = 'bg-slate-700/50 border-2 border-slate-600 rounded-2xl p-6 mb-4';
+                        item.innerHTML = `
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-xl font-bold text-white">${ag.Area}</h3>
+                                <span class="bg-${statusColor}-500/20 border border-${statusColor}-500/40 text-${statusColor}-300 px-4 py-1 rounded-full text-sm font-bold">
+                                    ${ag.Status}
+                                </span>
+                            </div>
+                            <div class="space-y-2 text-slate-300 text-sm">
+                                <p>📅 <strong>Data:</strong> ${new Date(ag.Data).toLocaleDateString('pt-BR')}</p>
+                                <p>👤 <strong>Solicitante:</strong> ${ag.Solicitante}</p>
+                                <p>📞 <strong>Telefone:</strong> ${ag.Telefone}</p>
+                                ${ag.Observacoes ? `<p>📝 <strong>Observações:</strong> ${ag.Observacoes}</p>` : ''}
+                            </div>
+                        `;
+                        meusAgendamentos.appendChild(item);
+                    });
+                } else {
+                    emptyState.classList.remove('hidden');
+                }
+            } catch (error) {
+                showToast('❌', 'Erro ao buscar agendamentos');
+                console.error('Erro:', error);
+            } finally {
+                meusLoading.classList.add('hidden');
+            }
+        });
+
+        // ==========================================
+        // TOAST
+        // ==========================================
+        function showToast(icon, message) {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastIcon.textContent = icon;
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+
+        // Data mínima (amanhã)
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('data').min = tomorrow.toISOString().split('T')[0];
+    </script>
+</body>
+</html>
